@@ -1,0 +1,135 @@
+paths:
+  /api/v1/categories:
+    get:
+      tags:
+        - Categories
+      operationId: CategoriesController.index
+      summary: Get all categories (Authenticated)
+      description: Gets all categories... User needs to be authenticated. Admin retrieve all categories, user only his/her company categories.
+      responses:
+        200:
+          description: Returns all categories in an array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+        401:
+          description: Unauthorized
+
+    post:
+      tags:
+        - Categories
+      operationId: CategoriesController.insert
+      summary: Create new category (Authenticated)
+      description: Create new category... User needs to be authenticated.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                company_id:
+                  type: integer
+                  format: int32
+                active:
+                  type: boolean
+      responses:
+        200:
+          description: Returns the save category
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Category"
+        401:
+          description: Unauthorized
+
+  /api/v1/categories/{id}:
+    get:
+      tags:
+        - Categories
+      operationId: CategoriesController.single
+      summary: Get a category (Authenticated)
+      description: Gets a category with all its links... User needs to be authenticated. Admin can retrieve all categories, User only from his/her company
+      parameters:
+        - name: id
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns a category and its links
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+                properties:
+                  links:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Link"
+        401:
+          description: Unauthorized
+    put:
+      tags:
+        - Categories
+      operationId: CategoriesController.update
+      summary: Update a category by id (Authenticated)
+      description: Updates a category and returns. Admin can update all categories, User only from his/her company
+      parameters:
+        - name: id
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                company_id:
+                  type: integer
+                  format: int32
+                active:
+                  type: boolean
+      responses:
+        200:
+          description: Returns the updated category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        401:
+          description: Unauthorized
+    delete:
+      tags:
+        - Categories
+      operationId: CategoriesController.delete
+      summary: Soft delete a category by id (Authenticated)
+      description: Sof deteles a category and returns no content. Admin can delete all categories, User only from his/her company
+      parameters:
+        - name: id
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Soft delete ok
+        401:
+          description: Unauthorized

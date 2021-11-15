@@ -1,0 +1,23 @@
+components:
+  schemas:
+    UserUpdate:
+      required:
+      - name
+      - company_id
+      - role_id
+      - active
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        company_id:
+          type: integer
+          format: int32
+        role_id:
+          type: integer
+          format: int32
+        active:
+          type: boolean

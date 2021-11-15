@@ -1,0 +1,162 @@
+paths:
+  /api/v1/categories/{categoryId}/links:
+    get:
+      tags:
+        - Links
+      operationId: LinksController.index
+      summary: Get all links (Not authenticated)
+      description: Gets all links... User needs to be authenticated. Admin retrieve all links, user only his/her company links.
+      parameters:
+      - name: categoryId
+        description: category id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Returns all links in an array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Link"
+        401:
+          description: Unauthorized
+
+    post:
+      tags:
+        - Links
+      operationId: LinksController.insert
+      summary: Create new category (Authenticated)
+      description: Create new category... User needs to be authenticated.
+      parameters:
+      - name: categoryId
+        description: category id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - link
+              type: object
+              properties:
+                name:
+                  type: string
+                link:
+                  type: string
+                active:
+                  type: boolean
+      responses:
+        200:
+          description: Returns the save category
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Link"
+        401:
+          description: Unauthorized
+
+  /api/v1/categories/{categoryId}/links/{id}:
+    get:
+      tags:
+        - Links
+      operationId: LinksController.single
+      summary: Get a category (Not authenticated)
+      description: Gets a category with all its links... User needs to be authenticated. Admin can retrieve all links, User only from his/her company
+      parameters:
+        - name: categoryId
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          description: link id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns the links of a category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Link"
+        401:
+          description: Unauthorized
+    put:
+      tags:
+        - Links
+      operationId: LinksController.update
+      summary: Update a category by id (Authenticated)
+      description: Updates a category and returns. Admin can update all links, User only from his/her company
+      parameters:
+        - name: categoryId
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          description: link id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - link
+              type: object
+              properties:
+                name:
+                  type: string
+                link:
+                  type: string
+                active:
+                  type: boolean
+      responses:
+        200:
+          description: Returns the updated category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Link"
+        401:
+          description: Unauthorized
+    delete:
+      tags:
+        - Links
+      operationId: LinksController.delete
+      summary: Soft delete a link by id (Authenticated)
+      description: Sof deteles a link and returns no content. Admin can delete all links, User only from his/her company
+      parameters:
+        - name: categoryId
+          description: category id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          description: link id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Soft delete ok
+        401:
+          description: Unauthorized

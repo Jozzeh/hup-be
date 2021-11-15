@@ -1,0 +1,39 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        company_id:
+          type: integer
+          format: int32
+        role_id:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+
+#           {
+#   "email": "test@test.be",
+#   "company_id": 1,
+#   "name": "test",
+#   "one_time_key": "ckvs2972p000087tn2ml495kj",
+#   "role_id": 2,
+#   "created_at": "2021-11-09T13:19:35.587+01:00",
+#   "updated_at": "2021-11-09T13:19:35.587+01:00",
+#   "id": 4
+# }

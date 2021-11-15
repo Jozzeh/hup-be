@@ -1,0 +1,19 @@
+paths:
+  /api/v1/roles:
+    get:
+      tags:
+        - Roles
+      operationId: RolesController.index
+      summary: Get all roles (Only authenticated)
+      description: Gets all roles... User needs to be authenticated.
+      responses:
+        200:
+          description: Returns all roles in an array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
+        401:
+          description: Unauthorized

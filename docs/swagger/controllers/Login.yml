@@ -1,0 +1,99 @@
+paths:
+  /api/v1/login:
+    post:
+      tags:
+        - Login
+      operationId: LoginController.login
+      summary: Login user
+      description: Log a user in by email and password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                rememberme:
+                  type: integer
+      responses:
+        200:
+          description: Returns an object with a type, token and expire (if rememberme is 1)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  token:
+                    type: string
+                  expiresIn:
+                    type: string
+                    format: datetime
+        404:
+          description: Not found
+  /api/v1/logout:
+    post:
+      tags:
+        - Login
+      summary: User logout
+      description: User is logged out. No content returned.
+      operationId: LoginController.logout
+      responses:
+        "204":
+          description: User logged out
+
+  /api/v1/reset:
+    post:
+      tags:
+        - Login
+      operationId: LoginController.resetPassword
+      summary: Update/save the password of a user 
+      description: Update/save the password of a user. one_time_key should be added and should be valid.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - one_time_key
+              - password
+              type: object
+              properties:
+                one_time_key:
+                  type: string
+                password:
+                  type: string
+      responses:
+        204:
+          description: No content
+        404:
+          description: Bad request
+  /api/v1/forgot:
+    post:
+      tags:
+        - Login
+      operationId: LoginController.forgotPassword
+      summary: Sets a one_time_key to reset the password of a user.
+      description: Sets a one_time_key to reset the password of a user. Needs a valid email (email sent with one_time_key in it).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+        required: true
+      responses:
+        204:
+          description: No content

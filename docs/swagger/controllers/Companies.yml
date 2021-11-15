@@ -1,0 +1,97 @@
+paths:
+  /api/v1/companies:
+    get:
+      tags:
+        - Companies
+      operationId: CompaniesController.index
+      summary: Get all companies (Only admin)
+      description: Gets all companies... User needs to be authenticated and have Admin role.
+      responses:
+        200:
+          description: Returns all companies in an array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+        401:
+          description: Unauthorized
+
+    post:
+      tags:
+        - Companies
+      operationId: CompaniesController.insert
+      summary: Create new company (Only admin)
+      description: Create new company... User needs to be authenticated and have Admin role.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        200:
+          description: Returns saved category 
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Company"
+        401:
+          description: Unauthorized
+
+  /api/v1/companies/{id}:
+    get:
+      tags:
+        - Companies
+      operationId: CompaniesController.single
+      summary: Get a company (Only admin)
+      description: Gets a company with all its users... User needs to be authenticated and have Admin role.
+      parameters:
+        - name: id
+          description: company id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns a company and its users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        401:
+          description: Unauthorized
+    put:
+      tags:
+        - Companies
+      operationId: CompaniesController.update
+      summary: Update a company by id (Only admin)
+      description: Updates a company and returns... User needs to be authenticated and have Admin role.
+      parameters:
+        - name: id
+          description: user id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns the updated company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        401:
+          description: Unauthorized

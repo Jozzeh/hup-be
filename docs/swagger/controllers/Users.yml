@@ -1,0 +1,153 @@
+paths:
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      operationId: UsersController.index
+      summary: Get all users (Only Admin)
+      description: Gets all users... User needs to be authenticated and have Admin role.
+      responses:
+        200:
+          description: Returns all users in an array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        401:
+          description: Unauthorized
+
+    post:
+      tags:
+        - Users
+      summary: Create a new user (Authenticated)
+      description: Creates a new user with basic information. Returns created user with id
+      operationId: UsersController.insert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInsert"
+        required: true
+      responses:
+        "400":
+          description: When there are validation errors
+        "404":
+          description: When the user is not found
+        "422":
+          description: When role id or company id does not match any id in the corresponding tables
+        "500":
+          description: Internal Server Error
+        "200":
+          description: When the user has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - Users
+      operationId: UsersController.single
+      summary: Get a users by id (Authenticated)
+      description: Gets a user by id... User needs to be authenticated and have Admin role.
+      parameters:
+        - name: id
+          description: user id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns the user in an object
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+                properties:
+                  company:
+                    type: object
+                    $ref: "#/components/schemas/Company"
+                  role:
+                    type: object
+                    $ref: "#/components/schemas/Role"
+        401:
+          description: Unauthorized
+    put:
+      tags:
+        - Users
+      operationId: UsersController.update
+      summary: Update a users by id (Authenticated)
+      description: Updates a user by id... User needs to be authenticated. Admin can update all, non-admin can update itself.
+      parameters:
+        - name: id
+          description: user id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+        required: true
+      responses:
+        200:
+          description: Returns the saved user in an object
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+        401:
+          description: Unauthorized
+        404:
+          description: Bad request
+    delete:
+      tags:
+        - Users
+      operationId: UsersController.delete
+      summary: Delete a users by id (Only Admin)
+      description: Delete a user by id... User needs to be authenticated and have Admin role.
+      parameters:
+        - name: id
+          description: user id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Empty response on success
+        401:
+          description: Unauthorized
+  /api/v1/users/myprofile:
+    get:
+      tags:
+        - Users
+      operationId: UsersController.myprofile
+      summary: Get current logged in user
+      description: Gets current logged in user with its role and company... User needs to be authenticated.
+      responses:
+        200:
+          description: Returns logged in user
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+                properties:
+                  company:
+                    type: object
+                    $ref: "#/components/schemas/Company"
+                  role:
+                    type: object
+                    $ref: "#/components/schemas/Role"
+        401:
+          description: Unauthorized
