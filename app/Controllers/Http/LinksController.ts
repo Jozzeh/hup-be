@@ -68,7 +68,6 @@ export default class LinksController {
           .andWhere('company_id', user.companyId)
           .firstOrFail()
       }
-      console.log(category)
       const link = new Link()
       link.name = req.name
       link.link = req.link
