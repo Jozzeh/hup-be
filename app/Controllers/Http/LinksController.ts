@@ -62,6 +62,7 @@ export default class LinksController {
 
     if (categoryId && user) {
       let category = new Category()
+      console.log(category)
       if (user?.role.name !== 'Admin') {
         category = await Category.query()
           .where('id', categoryId)
